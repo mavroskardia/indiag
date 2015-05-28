@@ -1,0 +1,25 @@
+{
+  "name": "indiag",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mavroskardia/indiag",
+  "authors": [
+    "chryso <chryso@gmail.com>"
+  ],
+  "description": "interaction diagram creator",
+  "main": "app.js",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.9.0",
+    "d3": "~3.5.5"
+  }
+}

@@ -1,0 +1,45 @@
+<dom-module id="indiag-editor">
+    <style>
+        :host { font-family: sans-serif; }
+
+        .link {
+            stroke: #000;
+            stroke-width: 1px;
+        }
+
+        .node {
+            stroke: steelblue;
+            fill: transparent;
+        }
+
+        .node text {
+            stroke: transparent;
+            fill: steelblue;
+        }
+
+    </style>
+    <template>
+        <textarea id="editor"></textarea>
+        <button id="generate">Generate</button>
+        <svg id="output" width="500" height="500"></svg>
+    </template>
+</dom-module>
+
+<script src="../bower_components/d3/d3.min.js"></script>
+<script src="../lib/canvasutilities.js"></script>
+<script src="../dist/app.js"></script>
+
+<script>
+    Polymer({
+        is: 'indiag-editor',
+        listeners: {
+            'generate.tap': 'generate'
+        },
+        ready: function () {
+            this.generator = new D3Generator(this.$.output);
+        },
+        generate: function () {
+            this.generator.generate(this.$.editor.value.trim());
+        }
+    });
+</script>
