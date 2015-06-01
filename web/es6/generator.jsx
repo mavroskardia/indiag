@@ -1,6 +1,6 @@
 class D3Generator {
     constructor(output) {
-        this.w = 500;
+        this.w = 1000;
         this.h = 500; // still haven't figured out a good way to decouple this
 
         this.margins = {
@@ -57,7 +57,7 @@ class D3Generator {
             .size([this.w, this.h])
             .linkDistance(d => d.source.w + d.target.w)
             .charge(d => -d.w - 200)
-            .gravity(0.05)
+            .gravity(0.5)
             .on('tick', () => {
                 this.nodes
                     .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
@@ -89,16 +89,23 @@ class D3Generator {
     }
 
     setup_nodes() {
+        let drag = this.force.drag()
+            .on('dragstart', this.dragstart);
+
         this.nodes = this.svg.selectAll('.node')
             .data(this.diagram.views)
             .enter().append('g')
             .attr('class', 'node indiag-editor')
-            .call(this.force.drag);
+            .call(drag);
 
         this.build_node_title();
         this.build_node_areas();
         this.build_node_borders();
         this.correct_dimensions();
+    }
+
+    dragstart(d) {
+        d3.select(this).classed('fixed', d.fixed = true);
     }
 
     correct_dimensions() {
@@ -181,7 +188,10 @@ class D3Parser {
                 areas: ['Area 1', 'Area 2', 'Area 3']
             }, {
                 name: 'View 3',
-                areas: ['Area 1', 'Area 2', 'Area 3']
+                areas: ['Area 1', 'My Extra Long View Name', 'Area 3', 'Area 4']
+            }, {
+                name: 'View 4',
+                areas: ['Area 1', 'Area 2']
             }],
             links: [{
                 source: 0,
@@ -191,6 +201,10 @@ class D3Parser {
                 source: 0,
                 target: 2,
                 offset: 2
+            }, {
+                source: 2,
+                target: 3,
+                offset: 3
             }]
         };
     }
