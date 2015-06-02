@@ -9,7 +9,7 @@
 
         .node {
             stroke: steelblue;
-            fill: transparent;
+            fill: #fff;
         }
 
         .node text {
@@ -21,12 +21,12 @@
     <template>
         <textarea id="editor"></textarea>
         <button id="generate">Generate</button>
-        <svg id="output" width="500" height="500"></svg>
+        <svg id="output"></svg>
     </template>
 </dom-module>
 
 <script src="../bower_components/d3/d3.min.js"></script>
-<script src="../lib/canvasutilities.js"></script>
+<script src="../contrib/canvasutilities.js"></script>
 <script src="../dist/app.js"></script>
 
 <script>

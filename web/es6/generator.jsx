@@ -98,9 +98,9 @@ class D3Generator {
             .attr('class', 'node indiag-editor')
             .call(drag);
 
+        this.build_node_borders();
         this.build_node_title();
         this.build_node_areas();
-        this.build_node_borders();
         this.correct_dimensions();
     }
 
@@ -173,40 +173,6 @@ class D3Generator {
 
     render() {
         this.force.start();
-    }
-}
-
-class D3Parser {
-    parse(code) {
-        return {
-            title: 'Test Title',
-            views: [{
-                name: 'Pretty Long View Title',
-                areas: ['Area 1', 'Area 2', 'Area 3']
-            }, {
-                name: 'View 2',
-                areas: ['Area 1', 'Area 2', 'Area 3']
-            }, {
-                name: 'View 3',
-                areas: ['Area 1', 'My Extra Long View Name', 'Area 3', 'Area 4']
-            }, {
-                name: 'View 4',
-                areas: ['Area 1', 'Area 2']
-            }],
-            links: [{
-                source: 0,
-                target: 1,
-                offset: 1 // offset is where the arrow should start
-            }, {
-                source: 0,
-                target: 2,
-                offset: 2
-            }, {
-                source: 2,
-                target: 3,
-                offset: 3
-            }]
-        };
     }
 }
 

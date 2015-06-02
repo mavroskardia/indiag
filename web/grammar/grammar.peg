@@ -1,0 +1,28 @@
+program = statement*
+
+statement = title / view / '\n'
+
+title = 'Title' ws '=' ws '"' titletext:legal_characters+ '"' ws '\n' {
+    return { title: titletext.filter(function (c) { return c != '\n' }).join('') }
+}
+
+view = id:[0-9]+ ':' ws name:legal_characters+ ws '\n' areas:areas* {
+    return {
+        id: parseInt(id.join('')),
+        name: name.join(''),
+        areas: areas
+    }
+}
+
+areas = area '\n' area / area
+
+area = indent name:legal_characters+ ws '=>' ws id:[0-9]+ ws '\n' {
+    return {
+        name: name.join('').trim(),
+        id: parseInt(id.join('').trim())
+    }
+}
+
+legal_characters = [A-z 0-9\.]
+ws = [ \t]*
+indent = ws ws ws ws / '\t'
