@@ -1,28 +1,38 @@
 program = statement*
 
-statement = title / view / '\n'
+statement = title / view / comment/ blankline
 
-title = 'Title' ws '=' ws '"' titletext:legal_characters+ '"' ws '\n' {
-    return { title: titletext.filter(function (c) { return c != '\n' }).join('') }
+title = 'Title' ws* '=' ws* '"' title:legalchars+ '"' '\n' {
+    return {
+        type: 'title',
+        title: title.join('')
+    }
 }
 
-view = id:[0-9]+ ':' ws name:legal_characters+ ws '\n' areas:areas* {
+view = id:[0-9]+ ':' ws* '"' name:legalchars+ '"' ws* '\n' areas:area* {
     return {
+        type: 'view',
         id: parseInt(id.join('')),
         name: name.join(''),
         areas: areas
     }
 }
 
-areas = area '\n' area / area
-
-area = indent name:legal_characters+ ws '=>' ws id:[0-9]+ ws '\n' {
+area = ws+ '"' name:legalchars+ '"' ws+ '=>' ws+ id:[0-9]+ '\n' {
     return {
-        name: name.join('').trim(),
-        id: parseInt(id.join('').trim())
+        type: 'area',
+        name: name.join(''),
+        id: parseInt(id.join(''))
     }
 }
 
-legal_characters = [A-z 0-9\.]
-ws = [ \t]*
-indent = ws ws ws ws / '\t'
+comment = '#' comment:[^\n]* '\n' {
+    return {
+        type: 'comment',
+        comment: comment.join('')
+    }
+}
+
+blankline = ws* '\n' { return '' }
+ws = [ \t]
+legalchars = [A-z 0-9.]

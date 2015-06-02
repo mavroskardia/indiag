@@ -1,11 +1,11 @@
 Title = "C.CA.FA Force Accounts"
 
-1: Force Account Overview
-    Open => 2
-    Report => 3
-    Other => 2
+1: "Force Account Overview"
+    "Open" => 2
+    "Report" => 3
+    "Other" => 2
 
-2: Force Account Summary
-    Open => 1
+2: "Force Account Summary"
+    "Open" => 3
 
-3: Force Account Reporting
+3: "Force Account Reporting"

@@ -1,6 +1,8 @@
 <dom-module id="indiag-editor">
     <style>
-        :host { font-family: sans-serif; }
+        :host {
+            font-family: sans-serif;
+        }
 
         .link {
             stroke: #000;
@@ -19,15 +21,31 @@
 
     </style>
     <template>
-        <textarea id="editor"></textarea>
-        <button id="generate">Generate</button>
-        <svg id="output"></svg>
+        <div relative horizontal layout>
+            <textarea id="editor">
+Title = "C.CA.FA Force Accounts"
+
+1: "Force Account Overview"
+    "Open" => 2
+    "Report" => 3
+    "Other" => 2
+
+2: "Force Account Summary"
+    "Open" => 3
+
+3: "Force Account Reporting"
+            </textarea>
+            <div id="errors"></div>
+            <button id="generate">Generate</button>
+            <svg id="output" flex></svg>
+        </div>
     </template>
 </dom-module>
 
 <script src="../bower_components/d3/d3.min.js"></script>
 <script src="../contrib/canvasutilities.js"></script>
 <script src="../dist/app.js"></script>
+<script src="../grammar/grammar.js"></script>
 
 <script>
     Polymer({
@@ -39,7 +57,13 @@
             this.generator = new D3Generator(this.$.output);
         },
         generate: function () {
-            this.generator.generate(this.$.editor.value.trim());
+            try {
+                this.generator.generate(this.$.editor.value.trim());
+            } catch (e) {
+                this.$.errors.innerHTML = '<p>There was a problem with the diagram text:</p>' +
+                '<p>'+e.message+'</p>'+
+                '<p>On line: ' + e.line + ' and column ' + e.column + '</p>';
+            }
         }
     });
 </script>

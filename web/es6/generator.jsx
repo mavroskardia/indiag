@@ -30,7 +30,7 @@ class D3Generator {
             .append("path")
             .attr("d", "M0,-5L10,0L0,5");
 
-        this.parser = new D3Parser();
+        this.parser = new D3Parser(Grammar);
     }
 
     reset() {
@@ -166,46 +166,12 @@ class D3Generator {
                     .attr('class', 'area indiag-editor')
                     .attr('x', 10)
                     .attr('y', 40 + i * 30)
-                    .text(a);
+                    .text(a.name);
             });
         });
     }
 
     render() {
         this.force.start();
-    }
-}
-
-class CanvasGenerator {
-    constructor(output) {
-        this.output = output;
-        this.w = this.output.width;
-        this.h = this.output.height;
-        this.margins = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-        };
-        this.c = this.output.getContext('2d');
-        this.parser = new Parser();
-    }
-
-    generate(code) {
-        this.diagram = this.parser.parse(code);
-        this.render_title();
-        this.compute_layout(this.diagram.views);
-    }
-
-    render_title() {
-        this.c.fillText(this.diagram.title, 0, 10);
-    }
-
-    compute_layout(views) {
-        let layout = [];
-
-        for (let view of views) {
-            console.log('laying out views');
-        }
     }
 }
