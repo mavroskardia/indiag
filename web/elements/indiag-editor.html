@@ -1,7 +1,16 @@
+<link rel="import" href="../bower_components/paper-material/paper-material.html" />
+<link rel="import" href="../bower_components/paper-button/paper-button.html" />
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html" />
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html" />
+
 <dom-module id="indiag-editor">
     <style>
         :host {
             font-family: sans-serif;
+        }
+
+        .container {
+            padding: 1em;
         }
 
         .link {
@@ -19,26 +28,38 @@
             fill: steelblue;
         }
 
+        svg {
+            margin: 1em;
+            border: solid 1px #ccc;
+            @apply(--layout-flex-3);
+        }
+
+        .editor {
+            @apply(--layout-flex);
+        }
+
+        .container {
+            @apply(--layout-horizontal);
+        }
+
+        .errors {
+            font-style: oblique;
+            font-size: 0.8rem;
+            color: #900;
+        }
     </style>
     <template>
-        <div relative horizontal layout>
-            <textarea id="editor">
-Title = "C.CA.FA Force Accounts"
-
-1: "Force Account Overview"
-    "Open" => 2
-    "Report" => 3
-    "Other" => 2
-
-2: "Force Account Summary"
-    "Open" => 3
-
-3: "Force Account Reporting"
-            </textarea>
-            <div id="errors"></div>
-            <button id="generate">Generate</button>
-            <svg id="output" flex></svg>
-        </div>
+        <paper-material elevation="2" class="container">
+            <div flex class="editor">
+                <paper-textarea id="editor"
+                    label="Interaction Diagram:"
+                    value="{{sample_language}}">
+                </paper-textarea>
+                <div class="errors" id="errors"></div>
+                <paper-button on-tap="generate" raised>Generate</paper-button>
+            </div>
+            <svg id="output" flex two></svg>
+        </paper-material>
     </template>
 </dom-module>
 
@@ -50,13 +71,24 @@ Title = "C.CA.FA Force Accounts"
 <script>
     Polymer({
         is: 'indiag-editor',
-        listeners: {
-            'generate.tap': 'generate'
-        },
         ready: function () {
             this.generator = new D3Generator(this.$.output);
+            this.sample_language = [
+            "Title = \"C.CA.FA Force Accounts\"",
+            "1: \"Force Account Overview\"",
+            "    \"Open\" => 2",
+            "    \"Report\" => 3",
+            "    \"Other\" => 2",
+            "",
+            "2: \"Force Account Summary\"",
+            "    \"Open\" => 3",
+            "",
+            "3: \"Force Account Reporting\"",
+            ""].join('\n');
         },
         generate: function () {
+            this.$.errors.innerHTML = '';
+
             try {
                 this.generator.generate(this.$.editor.value.trim());
             } catch (e) {
